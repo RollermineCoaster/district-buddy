@@ -12,9 +12,9 @@ function query(str, val) {
 
   client.query(str, val, (err, res) => {
     if (err) {
-      res.send(err.stack);
+      return(err.stack);
     } else {
-      res.send(res);
+      return(res);
     }
   })
 
@@ -25,7 +25,7 @@ var ser = restify.createServer();
 
 //test----------------------------------------
 ser.get('/q/:str/:val', function (req, res, next) {
-  query(req.params.str, req.params.val);
+  res.send(query(req.params.str, req.params.val));
   next();
 });
 //--------------------------------------------
