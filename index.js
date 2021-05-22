@@ -31,5 +31,5 @@ ser.get('/q/:str/:val', function (req, res, next) {
 //--------------------------------------------
 
 ser.listen(process.env.PORT || 8080, function() {
-  console.log('%s listening at %s', ser.name, server.url);
+  console.log('%s listening at %s', ser.name, ser.url);
 });
