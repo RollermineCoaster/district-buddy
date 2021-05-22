@@ -10,9 +10,11 @@ var pool = new Pool({
 var ser = restify.createServer();
 
 //test----------------------------------------
-ser.get('/q', function (req, res, next) {
-  res.send(pool.query('SELECT NOW()'));
-  pool.end();
+ser.get('/resetdb', function (req, res, next) {
+  pool.query('SELECT NOW()', (err, res) => {
+    console.log(err, res);
+    pool.end();
+  });
   next();
 });
 //--------------------------------------------
