@@ -12,13 +12,14 @@ function query(str, val) {
 
   client.query(str, val, (err, res) => {
     if (err) {
-      return(err.stack);
+      var result = err.stack;
     } else {
-      return(res);
+      var result = res;
     }
   })
 
   client.end();
+  return result;
 }
 
 var ser = restify.createServer();
