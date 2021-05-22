@@ -9,7 +9,7 @@ var pool = new Pool({
 
 var ser = restify.createServer();
 
-ser.post('/test', function (req, res, next) {
+ser.get('/test', function (req, res, next) {
   pool.query('SELECT NOW()', (err, sqlres) => {
     if (err) {
       console.log(err);
