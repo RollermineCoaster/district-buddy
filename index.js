@@ -15,11 +15,12 @@ ser.get('/test', function (req, res, next) {
       console.log(err);
       res.status(500);
     } else {
-      console.log(qres);
       res.status(200);
-      next();
     }
   });
+  
+  res.send();
+  next();
 });
 
 ser.listen(process.env.PORT || 8080, function() {
