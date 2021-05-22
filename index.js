@@ -1,33 +1,17 @@
 var restify = require('restify');
-var {Client} = require('pg');
-var client = new Client({
+var {Pool} = require('pg');
+var pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 });
 
-function query(str, val) {
-  client.connect();
-
-  var result;
-  client.query(str, val, (err, res) => {
-    if (err) {
-      result = err.stack;
-    } else {
-      result = res;
-    }
-  })
-
-  client.end();
-  return result;
-}
-
 var ser = restify.createServer();
 
 //test----------------------------------------
-ser.get('/q/:str/:val', function (req, res, next) {
-  res.send(query(req.params.str, req.params.val));
+ser.get('/q', function (req, res, next) {
+  res.send(pool.query('SELECT NOW()'));
   next();
 });
 //--------------------------------------------
