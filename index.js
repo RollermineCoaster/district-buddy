@@ -13,13 +13,12 @@ ser.post('/reg', function (req, res, next) {
   pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
     if (err) {
       console.log(err);
-      res.status(500);
+      res.send(500);
     } else {
-      res.status(201);
+      res.send(201);
     }
   });
-  
-  res.send();
+
   next();
 });
 
