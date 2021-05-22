@@ -19,7 +19,7 @@ ser.post('/reg', function (req, res, next) {
       if (err) {
         console.log(err);
         res.send(500);
-      }else if (res.rowCount > 0) {
+      }else if (qres.rowCount > 0) {
         res.send(409);
       } else {
         pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
