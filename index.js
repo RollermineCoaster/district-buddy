@@ -15,7 +15,7 @@ ser.post('/reg', function (req, res, next) {
       console.log(err);
       res.status(500);
     } else {
-      res.status(200);
+      res.status(201);
     }
   });
   
