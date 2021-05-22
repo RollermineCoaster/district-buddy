@@ -9,6 +9,8 @@ var pool = new Pool({
 
 var ser = restify.createServer();
 
+ser.use(restify.plugins.bodyParser({mapParams: true}));
+
 ser.post('/reg', function (req, res, next) {
   pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
     if (err) {
