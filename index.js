@@ -14,14 +14,26 @@ ser.use(restify.plugins.bodyParser({mapParams: true}));
 ser.post('/reg', function (req, res, next) {
 
   if(req.params.name&&req.params.phone&&req.params.pwd) {
-    pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
+
+    pool.query('SELECT * FROM users WHERE phone = $1', [phone], (err, qres) => {
       if (err) {
         console.log(err);
         res.send(500);
+      }else if (res.rowCount > 0) {
+        res.send(409);
       } else {
-        res.send(201);
+        pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
+          if (err) {
+            console.log(err);
+            res.send(500);
+          } else {
+            res.send(201);
+          }
+        });
       }
     });
+  } else {
+    res.send(400);
   }
 
   next();
