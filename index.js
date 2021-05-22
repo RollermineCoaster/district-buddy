@@ -21,5 +21,3 @@ ser.get('/resetdb', function (req, res, next) {
 ser.listen(process.env.PORT || 8080, function() {
   console.log('%s listening at %s', ser.name, ser.url);
 });
-
-pool.end();
