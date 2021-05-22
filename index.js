@@ -11,7 +11,8 @@ var ser = restify.createServer();
 
 //test----------------------------------------
 ser.get('/q', function (req, res, next) {
-  res.send(await pool.query('SELECT NOW()'));
+  var sql = await pool.query('SELECT NOW()')
+  res.send(sql);
   await pool.end();
   next();
 });
