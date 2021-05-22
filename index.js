@@ -15,7 +15,7 @@ ser.post('/reg', function (req, res, next) {
 
   if(req.params.name&&req.params.phone&&req.params.pwd) {
 
-    pool.query('SELECT * FROM users WHERE phone = $1', [phone], (err, qres) => {
+    pool.query('SELECT * FROM users WHERE phone = $1', [req.params.phone], (err, qres) => {
       if (err) {
         console.log(err);
         res.send(500);
