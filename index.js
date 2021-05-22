@@ -9,14 +9,16 @@ var pool = new Pool({
 
 var ser = restify.createServer();
 
-//test----------------------------------------
-ser.get('/resetdb', function (req, res, next) {
-  pool.query('SELECT NOW()', (err, res) => {
-    console.log(err, res);
+ser.post('/test', function (req, res, next) {
+  pool.query('SELECT NOW()', (err, sqlres) => {
+    if (err) {
+      console.log(err);
+      res.status(500);
+    }
   });
+  res.status(200);
   next();
 });
-//--------------------------------------------
 
 ser.listen(process.env.PORT || 8080, function() {
   console.log('%s listening at %s', ser.name, ser.url);
