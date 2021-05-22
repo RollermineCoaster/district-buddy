@@ -11,10 +11,11 @@ function query(str, val) {
   client.connect();
 
   client.query(str, val, (err, res) => {
+    var result;
     if (err) {
-      var result = err.stack;
+      result = err.stack;
     } else {
-      var result = res;
+      result = res;
     }
   })
 
