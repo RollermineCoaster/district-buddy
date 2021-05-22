@@ -1,14 +1,35 @@
 var restify = require('restify');
+var {Client} = require('pg');
+var client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
-function respond(req, res, next) {
-  res.send('hello ' + req.params.name);
-  next();
+function query(str, val) {
+  client.connect();
+
+  client.query(str, val, (err, res) => {
+    if (err) {
+      res.send(err.stack);
+    } else {
+      res.send(res);
+    }
+  })
+
+  client.end();
 }
 
-var server = restify.createServer();
-server.get('/hello/:name', respond);
-server.head('/hello/:name', respond);
+var ser = restify.createServer();
 
-server.listen(process.env.PORT || 8080, function() {
-  console.log('%s listening at %s', server.name, server.url);
+//test----------------------------------------
+ser.get('/q/:str/:val', function (req, res, next) {
+  query(req.params.str, req.params.val);
+  next();
+});
+//--------------------------------------------
+
+ser.listen(process.env.PORT || 8080, function() {
+  console.log('%s listening at %s', ser.name, server.url);
 });

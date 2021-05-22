@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/RollermineCoaster/district-buddy#readme",
   "dependencies": {
+    "pg": "^8.6.0",
     "restify": "^8.5.1"
   }
 }
