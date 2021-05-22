@@ -10,8 +10,8 @@ var client = new Client({
 function query(str, val) {
   client.connect();
 
+  var result;
   client.query(str, val, (err, res) => {
-    var result;
     if (err) {
       result = err.stack;
     } else {
