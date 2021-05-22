@@ -9,8 +9,8 @@ var pool = new Pool({
 
 var ser = restify.createServer();
 
-ser.get('/test', function (req, res, next) {
-  pool.query('SELECT NOW()', (err, qres) => {
+ser.post('/reg', function (req, res, next) {
+  pool.query('INSERT INTO public.users(name, phone, pwd)	VALUES ($1, $2, $3);', [req.params.name, req.params.phone, req.params.pwd], (err, qres) => {
     if (err) {
       console.log(err);
       res.status(500);
