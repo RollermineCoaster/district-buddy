@@ -38,7 +38,7 @@ async function getDataFromDB(type, id) {
     if (id) {
       return await pool.query('SELECT * FROM areas WHERE id = 1');
     } else {
-      return await pool.query('SELECT * FROM $1', [type]);
+      return await pool.query('SELECT * FROM areas');
     }
   } catch (err) {
     console.log(err.stack);
