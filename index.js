@@ -250,8 +250,8 @@ ser.del('/delcomment', async function (req, res, next) {
 
 //get area
 ser.get('/area/:id', async function (req, res, next) {
-  if (res.params) {
-    res.send(await getDataFromDB('areas', res.params.id));
+  if (req.params) {
+    res.send(await getDataFromDB('areas', req.params.id));
   } else {
     res.send(await getDataFromDB('areas'));
   }
