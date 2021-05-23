@@ -34,14 +34,22 @@ async function getIdByToken(token) {
 }
 
 async function getDataFromDB(type, id) {
-  var tables = ['areas', 'comments', 'districts', 'posts']
+  var tables = ['areas', 'comments', 'districts', 'posts', 'users']
   try {
     type = tables.find(element => element == type);
     if (type) {
       if (id) {
-        return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
+        if (type = 'users') {
+          return (await pool.query('SELECT id, name, img FROM users WHERE id = $1', [id])).rows;
+        } else {
+          return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
+        }
       } else {
-        return (await pool.query('SELECT * FROM ' + type)).rows;
+        if (type = 'users') {
+          return (await pool.query('SELECT id, name, img FROM users')).rows;
+        } else {
+          return (await pool.query('SELECT * FROM ' + type)).rows;
+        }
       }
     }
   } catch (err) {
@@ -274,13 +282,13 @@ ser.get('/get/:table/:id', async function (req, res, next) {
   }
 })
 
-//get user data
-ser.get('/user/:id', async function (req, res, next) {
-  if (req.params.token && req.params.id) {
+//get all data from a user
+ser.post('/userinfo', async function (req, res, next) {
+  if (req.params.token && req.params.user_id) {
     var token_owner_id = await getIdByToken(req.params.token);
-    if (token_owner_id == req.params.id) {
-      //get user data(all)
-      pool.query('SELECT id, name, phone, pwd, img FROM users WHERE id = $1;', [req.params.id], (err, qres) => {
+    if (token_owner_id == req.params.user_id) {
+      //get the data
+      pool.query('SELECT id, name, phone, pwd, img FROM users WHERE id = 15;', [user_id], (err, qres) => {
         if (err) {
           sendError(err, res);
         } else {
@@ -288,18 +296,7 @@ ser.get('/user/:id', async function (req, res, next) {
         }
       });
     } else {
-      //get user data(id, name, img only)
-      pool.query('SELECT id, name, img FROM users WHERE id = $1;', [req.params.id], (err, qres) => {
-        if (err) {
-          sendError(err, res);
-        } else {
-          if (qres.rowCount > 0) {
-            res.send(qres.rows[0]);
-          } else {
-            res.send(404);
-          }
-        }
-      });
+      res.send(401);
     }
   } else {
     res.send(400);
