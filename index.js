@@ -33,6 +33,18 @@ async function getIdByToken(token) {
   }
 }
 
+async function getDataFromDB(type, id) {
+  try {
+    if (id) {
+      return await pool.query('SELECT * FROM $1 WHERE id = $2', [type, id]);
+    } else {
+      return await pool.query('SELECT * FROM $1', [type]);
+    }
+  } catch (err) {
+    console.log(err.stack);
+  }
+}
+
 //user registration
 ser.post('/reg', function (req, res, next) {
 
@@ -235,6 +247,11 @@ ser.del('/delcomment', async function (req, res, next) {
     res.send(400);
   }
 });
+
+//get area
+ser.get('/area/:id', async function (req, res, next) {
+  res.send(getDataFromDB('areas', res.params.id));
+})
 
 ser.listen(process.env.PORT || 8080, function () {
   console.log('%s listening at %s', ser.name, ser.url);
