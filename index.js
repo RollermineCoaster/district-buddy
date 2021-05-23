@@ -22,16 +22,12 @@ function genToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
-async function getIdByToken(token) {
-  var id;
-  pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
-    if (err) {
-      console.log(err);
-    } else {
-      id = qres.rows[0].id;
-    }
-  })
-  return id;
+function getIdByToken(token) {
+  return pool.query('SELECT id FROM users WHERE token = $1', [token])
+    .then(qres => {
+      return qres.rows[0].id;
+    })
+    .catch(err => console.log(err.stack));
 }
 
 //user registration
@@ -114,7 +110,7 @@ ser.post('/newpost', function (req, res, next) {
 //new comment
 ser.post('/newcomment', function (req, res, next) {
   if (req.params.token && req.params.post_id && req.params.content) {
-    var poster_id = await getIdByToken(req.params.token);
+    var poster_id = getIdByToken(req.params.token);
     if (poster_id) {
       //create comment
       pool.query('INSERT INTO comments(poster_id, post_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.post_id, req.params.content], (err, qres) => {
