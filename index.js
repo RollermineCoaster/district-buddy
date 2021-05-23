@@ -90,7 +90,7 @@ ser.post('/login', function (req, res, next) {
 //new post
 ser.post('/newpost', function (req, res, next) {
   if (req.params.token && req.params.district_id && req.params.content) {
-    var poster_id = getIdByToken(token);
+    var poster_id = getIdByToken(req.params.token);
     if (poster_id) {
       //create post
       pool.query('INSERT INTO posts(poster_id, district_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.district_id, req.params.content], (err, qres) => {
@@ -111,7 +111,7 @@ ser.post('/newpost', function (req, res, next) {
 //new comment
 ser.post('/newcomment', function (req, res, next) {
   if (req.params.token && req.params.post_id && req.params.content) {
-    var poster_id = getIdByToken(token);
+    var poster_id = getIdByToken(req.params.token);
     if (poster_id) {
       //create comment
       pool.query('INSERT INTO comments(poster_id, post_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.post_id, req.params.content], (err, qres) => {
