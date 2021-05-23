@@ -36,7 +36,7 @@ async function getIdByToken(token) {
 async function getDataFromDB(type, id) {
   try {
     if (id) {
-      return await pool.query('SELECT * FROM areas WHERE id = $1', [id]);
+      return await pool.query('SELECT * FROM areas WHERE id = 1');
     } else {
       return await pool.query('SELECT * FROM $1', [type]);
     }
