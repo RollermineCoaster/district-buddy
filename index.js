@@ -252,15 +252,57 @@ ser.del('/delcomment', async function (req, res, next) {
   }
 });
 
+//get data from database(all)
 ser.get('/get/:table', async function (req, res, next) {
-  res.send(await getDataFromDB(req.params.table));
+  if (req.params) {
+    res.send(await getDataFromDB(req.params.table));
+  } else {
+    res.send(400);
+  }
 })
 
+//get data from database
 ser.get('/get/:table/:id', async function (req, res, next) {
   if (req.params) {
-    res.send(await getDataFromDB(req.params.table + 's', req.params.id));
+    if (req.params.id) {
+      res.send(await getDataFromDB(req.params.table + 's', req.params.id));
+    } else {
+      res.send(await getDataFromDB(req.params.table + 's'));
+    }
   } else {
-    res.send(await getDataFromDB(req.params.table + 's'));
+    res.send(400);
+  }
+})
+
+//get user data
+ser.get('/user/:id', async function (req, res, next) {
+  if (req.params.token && req.params.id) {
+    var token_owner_id = await getIdByToken(req.params.token);
+    if (token_owner_id == req.params.id) {
+      //get user data(all)
+      pool.query('SELECT id, name, phone, pwd, img FROM users WHERE id = $1;', [req.params.id], (err, qres) => {
+        if (err) {
+          sendError(err, res);
+        } else {
+          res.send(qres.rows[0]);
+        }
+      });
+    } else {
+      //get user data(id, name, img only)
+      pool.query('SELECT id, name, img FROM users WHERE id = $1;', [req.params.id], (err, qres) => {
+        if (err) {
+          sendError(err, res);
+        } else {
+          if (qres.rowCount > 0) {
+            res.send(qres.rows[0]);
+          } else {
+            res.send(404);
+          }
+        }
+      });
+    }
+  } else {
+    res.send(400);
   }
 })
 
