@@ -25,7 +25,9 @@ function genToken() {
 async function getIdByToken(token) {
   try {
     var res = await pool.query('SELECT id FROM users WHERE token = $1', [token]);
-    return res.rows[0].id;
+    if (res.rowCount > 0) {
+      return res.rows[0].id;
+    }
   } catch (err) {
     console.log(err.stack);
   }
@@ -160,6 +162,44 @@ ser.put('/editcomment', async function (req, res, next) {
           sendError(err, res);
         } else {
           res.send(200);
+        }
+      });
+    } else {
+      res.send(401);
+    }
+  } else {
+    res.send(400);
+  }
+});
+
+//delete post
+ser.del('/delpost', async function (req, res, next) {
+  if (req.params.token && req.params.post_id) {
+    var poster_id = await getIdByToken(req.params.token);
+    if (poster_id) {
+      //check if the poster is right
+      pool.query('SELECT * FROM posts WHERE poster_id = $1 AND id = $2;', [poster_id, req.params.post_id], (err, qres) => {
+        if (err) {
+          sendError(err, res);
+        } else {
+          if (qres.rowCount > 0) {
+            //delete all comments in the post
+            pool.query('DELETE FROM comments WHERE post_id = $1;', [req.params.post_id], (err, qres) => {
+              if (err) {
+                sendError(err, res);
+              } else {
+                pool.query('DELETE FROM posts WHERE id = $1;', [req.params.post_id], (err, qres) => {
+                  if (err) {
+                    sendError(err, res);
+                  } else {
+                    res.send(200);
+                  }
+                });
+              }
+            });
+          } else {
+            res.send(401);
+          }
         }
       });
     } else {
