@@ -128,6 +128,27 @@ ser.post('/newcomment', async function (req, res, next) {
   }
 })
 
+//update post
+ser.put('/editpost', async function (req, res, next) {
+  if (req.params.token && req.params.post_id && req.params.content) {
+    var poster_id = await getIdByToken(req.params.token);
+    if (poster_id) {
+      //update post
+      pool.query('UPDATE posts SET content = $1 WHERE poster_id = $2 AND id = $3;', [req.params.content, poster_id, req.params.post_id], (err, qres) => {
+        if (err) {
+          sendError(err, res);
+        } else {
+          res.send(200);
+        }
+      });
+    } else {
+      res.send(401);
+    }
+  } else {
+    res.send(400);
+  }
+});
+
 ser.listen(process.env.PORT || 8080, function () {
   console.log('%s listening at %s', ser.name, ser.url);
 });
