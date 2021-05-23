@@ -130,7 +130,7 @@ ser.post('/newcomment', async function (req, res, next) {
 
 //update post
 ser.put('/editpost', async function (req, res, next) {
-  console.log(req);
+  console.log(req.params);
   if (req.params.token && req.params.post_id && req.params.content) {
     var poster_id = await getIdByToken(req.params.token);
     if (poster_id) {
