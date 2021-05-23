@@ -23,13 +23,13 @@ function genToken() {
 }
 
 function getIdByToken(token) {
-  return pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
-    if (err) {
-      return;
-    } else {
-      return qres.rows[0].id;
+  var id;
+  pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
+    if (!err) {
+      id = qres.rows[0].id;
     }
   })
+  return id;
 }
 
 //user registration
