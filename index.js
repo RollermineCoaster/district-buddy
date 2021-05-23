@@ -34,11 +34,12 @@ async function getIdByToken(token) {
 }
 
 async function getDataFromDB(type, id) {
+  var tables = ['areas', 'comments', 'districts', 'posts', 'users']
   try {
     if (id) {
-      return await pool.query('SELECT * FROM $1 WHERE id = $2', [type, id]).rows;
+      return (await pool.query('SELECT * FROM ' + tables.find(type) + ' WHERE id = $1', [id])).rows;
     } else {
-      return await pool.query('SELECT * FROM areas').rows;
+      return (await pool.query('SELECT * FROM ' + tables.find(type))).rows;
     }
   } catch (err) {
     console.log(err.stack);
