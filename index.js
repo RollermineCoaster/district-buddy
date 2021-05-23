@@ -22,9 +22,9 @@ function genToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
-function getIdByToken(token) {
+async function getIdByToken(token) {
   try {
-    var res = pool.query('SELECT id FROM users WHERE token = $1', [token]);
+    var res = await pool.query('SELECT id FROM users WHERE token = $1', [token]);
     console.log(res.rows[0].id);
     return res.rows[0].id;
   } catch (err) {
