@@ -258,6 +258,62 @@ ser.get('/area/:id', async function (req, res, next) {
   }
 })
 
+//get areas
+ser.get('/areas', async function (req, res, next) {
+  res.send(await getDataFromDB('areas'));
+})
+
+//get district
+ser.get('/district/:id', async function (req, res, next) {
+  if (req.params) {
+    res.send(await getDataFromDB('districts', req.params.id));
+  } else {
+    res.send(await getDataFromDB('districts'));
+  }
+})
+
+//get districts
+ser.get('/districts', async function (req, res, next) {
+  res.send(await getDataFromDB('districts'));
+})
+
+//get user
+ser.get('/user/:id', async function (req, res, next) {
+  if (req.params) {
+    res.send(await getDataFromDB('users', req.params.id));
+  } else {
+    res.send(await getDataFromDB('users'));
+  }
+})
+
+//get users
+ser.get('/users', async function (req, res, next) {
+  res.send(await getDataFromDB('users'));
+})
+
+//get post
+ser.get('/post/:id', async function (req, res, next) {
+  if (req.params) {
+    res.send(await getDataFromDB('posts', req.params.id));
+  } else {
+    res.send(await getDataFromDB('posts'));
+  }
+})
+
+//get posts
+ser.get('/posts', async function (req, res, next) {
+  res.send(await getDataFromDB('posts'));
+})
+
+//get comment
+ser.get('/comment/:id', async function (req, res, next) {
+  if (req.params) {
+    res.send(await getDataFromDB('comments', req.params.id));
+  } else {
+    res.send(await getDataFromDB('comments'));
+  }
+})
+
 ser.listen(process.env.PORT || 8080, function () {
   console.log('%s listening at %s', ser.name, ser.url);
 });
