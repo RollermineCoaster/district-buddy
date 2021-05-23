@@ -88,9 +88,9 @@ ser.post('/login', function (req, res, next) {
 })
 
 //new post
-ser.post('/newpost', function (req, res, next) {
+ser.post('/newpost', async function (req, res, next) {
   if (req.params.token && req.params.district_id && req.params.content) {
-    var poster_id = getIdByToken(req.params.token);
+    var poster_id = await getIdByToken(req.params.token);
     console.log(poster_id);
     if (poster_id) {
       //create post
