@@ -27,7 +27,6 @@ function getIdByToken(token) {
     if (err) {
       return;
     } else {
-      console.log(qres.rows[0].id);
       return qres.rows[0].id;
     }
   })
@@ -92,6 +91,7 @@ ser.post('/login', function (req, res, next) {
 ser.post('/newpost', function (req, res, next) {
   if (req.params.token && req.params.district_id && req.params.content) {
     var poster_id = getIdByToken(req.params.token);
+    console.log(poster_id);
     if (poster_id) {
       //create post
       pool.query('INSERT INTO posts(poster_id, district_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.district_id, req.params.content], (err, qres) => {
