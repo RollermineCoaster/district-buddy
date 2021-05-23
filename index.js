@@ -288,7 +288,7 @@ ser.post('/userinfo', async function (req, res, next) {
     var token_owner_id = await getIdByToken(req.params.token);
     if (token_owner_id == req.params.user_id) {
       //get the data
-      pool.query('SELECT id, name, phone, pwd, img FROM users WHERE id = 15;', [user_id], (err, qres) => {
+      pool.query('SELECT id, name, phone, pwd, img FROM users WHERE id = 15;', [req.params.user_id], (err, qres) => {
         if (err) {
           sendError(err, res);
         } else {
