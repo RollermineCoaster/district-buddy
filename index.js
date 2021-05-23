@@ -23,7 +23,7 @@ function genToken() {
 }
 
 function getIdByToken(token) {
-  pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
+  return pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
     if (err) {
       return;
     } else {
@@ -91,7 +91,7 @@ ser.post('/login', function (req, res, next) {
 ser.post('/newpost', function (req, res, next) {
   if (req.params.token && req.params.district_id && req.params.content) {
     var poster_id = getIdByToken(req.params.token);
-    console.log(getIdByToken(req.params.token));
+    console.log(poster_id);
     if (poster_id) {
       //create post
       pool.query('INSERT INTO posts(poster_id, district_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.district_id, req.params.content], (err, qres) => {
