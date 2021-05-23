@@ -37,10 +37,12 @@ async function getDataFromDB(type, id) {
   var tables = ['areas', 'comments', 'districts', 'posts']
   try {
     type = tables.find(element => element == type);
-    if (type && id) {
-      return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
-    } else {
-      return (await pool.query('SELECT * FROM ' + type)).rows;
+    if (type) {
+      if (id) {
+        return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
+      } else {
+        return (await pool.query('SELECT * FROM ' + type)).rows;
+      }
     }
   } catch (err) {
     console.log(err.stack);
