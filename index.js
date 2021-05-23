@@ -25,7 +25,9 @@ function genToken() {
 function getIdByToken(token) {
   var id;
   pool.query('SELECT id FROM users WHERE token = $1', [token], (err, qres) => {
-    if (!err) {
+    if (err) {
+      console.log(err);
+    } else {
       id = qres.rows[0].id;
     }
   })
