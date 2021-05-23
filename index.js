@@ -25,7 +25,6 @@ function genToken() {
 async function getIdByToken(token) {
   try {
     var res = await pool.query('SELECT id FROM users WHERE token = $1', [token]);
-    console.log(res.rows[0].id);
     return res.rows[0].id;
   } catch (err) {
     console.log(err.stack);
@@ -91,7 +90,6 @@ ser.post('/login', function (req, res, next) {
 ser.post('/newpost', async function (req, res, next) {
   if (req.params.token && req.params.district_id && req.params.content) {
     var poster_id = await getIdByToken(req.params.token);
-    console.log(poster_id);
     if (poster_id) {
       //create post
       pool.query('INSERT INTO posts(poster_id, district_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.district_id, req.params.content], (err, qres) => {
@@ -110,9 +108,9 @@ ser.post('/newpost', async function (req, res, next) {
 })
 
 //new comment
-ser.post('/newcomment', function (req, res, next) {
+ser.post('/newcomment', async function (req, res, next) {
   if (req.params.token && req.params.post_id && req.params.content) {
-    var poster_id = getIdByToken(req.params.token);
+    var poster_id = await getIdByToken(req.params.token);
     if (poster_id) {
       //create comment
       pool.query('INSERT INTO comments(poster_id, post_id, content)	VALUES ($1, $2, $3);', [poster_id, req.params.post_id, req.params.content], (err, qres) => {
