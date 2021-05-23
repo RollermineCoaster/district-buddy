@@ -27,6 +27,7 @@ function getIdByToken(token) {
     if (err) {
       return;
     } else {
+      console.log(qres.rows[0]);
       return qres.rows[0];
     }
   })
