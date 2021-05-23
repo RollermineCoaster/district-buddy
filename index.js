@@ -36,10 +36,11 @@ async function getIdByToken(token) {
 async function getDataFromDB(type, id) {
   var tables = ['areas', 'comments', 'districts', 'posts']
   try {
-    if (id) {
-      return (await pool.query('SELECT * FROM ' + tables.find(element => element == type) + ' WHERE id = $1', [id])).rows;
+    type = tables.find(element => element == type);
+    if (type && id) {
+      return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
     } else {
-      return (await pool.query('SELECT * FROM ' + tables.find(element => element == type))).rows;
+      return (await pool.query('SELECT * FROM ' + type)).rows;
     }
   } catch (err) {
     console.log(err.stack);
@@ -255,9 +256,9 @@ ser.get('/get/:table', async function (req, res, next) {
 
 ser.get('/get/:table/:id', async function (req, res, next) {
   if (req.params) {
-    res.send(await getDataFromDB(req.params.table, req.params.id));
+    res.send(await getDataFromDB(req.params.table + 's', req.params.id));
   } else {
-    res.send(await getDataFromDB(req.params.table));
+    res.send(await getDataFromDB(req.params.table + 's'));
   }
 })
 
