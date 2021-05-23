@@ -39,13 +39,13 @@ async function getDataFromDB(type, id) {
     type = tables.find(element => element == type);
     if (type) {
       if (id) {
-        if (type = 'users') {
+        if (type == 'users') {
           return (await pool.query('SELECT id, name, img FROM users WHERE id = $1', [id])).rows;
         } else {
           return (await pool.query('SELECT * FROM ' + type + ' WHERE id = $1', [id])).rows;
         }
       } else {
-        if (type = 'users') {
+        if (type == 'users') {
           return (await pool.query('SELECT id, name, img FROM users')).rows;
         } else {
           return (await pool.query('SELECT * FROM ' + type)).rows;
