@@ -188,6 +188,7 @@ ser.del('/delpost', async function (req, res, next) {
               if (err) {
                 sendError(err, res);
               } else {
+                //delete the post
                 pool.query('DELETE FROM posts WHERE id = $1;', [req.params.post_id], (err, qres) => {
                   if (err) {
                     sendError(err, res);
@@ -197,6 +198,31 @@ ser.del('/delpost', async function (req, res, next) {
                 });
               }
             });
+          } else {
+            res.send(401);
+          }
+        }
+      });
+    } else {
+      res.send(401);
+    }
+  } else {
+    res.send(400);
+  }
+});
+
+//delete comment
+ser.del('/delcomment', async function (req, res, next) {
+  if (req.params.token && req.params.comment_id) {
+    var poster_id = await getIdByToken(req.params.token);
+    if (poster_id) {
+      //delete the comment
+      pool.query('DELETE FROM comments WHERE poster_id = $1 AND id = $2;', [poster_id, req.params.comment_id], (err, qres) => {
+        if (err) {
+          sendError(err, res);
+        } else {
+          if (qres.rowCount > 0) {
+            res.send(200);
           } else {
             res.send(401);
           }
