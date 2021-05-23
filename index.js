@@ -61,6 +61,7 @@ ser.post('/reg', function (req, res, next) {
 
 //user login
 ser.post('/login', function (req, res, next) {
+  console.log(req.body);
   if (req.params.phone && req.params.pwd) {
     //check if user valid
     pool.query('SELECT * FROM users WHERE phone = $1 AND pwd = $2;', [req.params.phone, req.params.pwd], (err, qres) => {
