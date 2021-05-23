@@ -61,7 +61,6 @@ ser.post('/reg', function (req, res, next) {
 
 //user login
 ser.post('/login', function (req, res, next) {
-  console.log(req.body);
   if (req.params.phone && req.params.pwd) {
     //check if user valid
     pool.query('SELECT * FROM users WHERE phone = $1 AND pwd = $2;', [req.params.phone, req.params.pwd], (err, qres) => {
@@ -131,7 +130,7 @@ ser.post('/newcomment', async function (req, res, next) {
 
 //update post
 ser.put('/editpost', async function (req, res, next) {
-  console.log(req.body);
+  console.log(req);
   if (req.params.token && req.params.post_id && req.params.content) {
     var poster_id = await getIdByToken(req.params.token);
     if (poster_id) {
