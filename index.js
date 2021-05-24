@@ -249,6 +249,7 @@ ser.del('/delpost', async function (req, res, next) {
   next();
 });
 
+//for cors
 ser.opts('/delpost', function (req, res, next){
   res.send(200);
   next();
@@ -279,6 +280,12 @@ ser.del('/delcomment', async function (req, res, next) {
   }
   next();
 });
+
+//for cors
+ser.opts('/delcomment', function (req, res, next){
+  res.send(200);
+  next();
+})
 
 //get data from database(all)
 ser.get('/get/:table', async function (req, res, next) {
