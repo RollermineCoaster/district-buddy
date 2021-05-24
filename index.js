@@ -287,6 +287,22 @@ ser.get('/get/:table/:id', async function (req, res, next) {
   }
 })
 
+//get comment from a post
+ser.get('/commentinpost/:post_id', function (req, res, next) {
+  if (req.params.post_id) {
+    //get comment
+    pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE post_id = $1', [id], (err, qres) => {
+      if (err) {
+        sendError(err, res);
+      } else {
+        res.send(qres.rows);
+      }
+    });
+  } else {
+    res.send(400);
+  }
+})
+
 //get all data from a user
 ser.post('/userinfo', async function (req, res, next) {
   if (req.params.token && req.params.user_id) {
