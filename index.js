@@ -102,11 +102,12 @@ ser.post('/login', function (req, res, next) {
       } else {
         var token = genToken();
         //save token to database
-        pool.query('UPDATE users SET token = $1 WHERE phone = $2;', [token, req.params.phone], (err, qres) => {
+        pool.query('UPDATE users SET token = $1 WHERE phone = $2;', [token, req.params.phone], async (err, qres) => {
           if (err) {
             sendError(err, res);
           } else {
-            res.send({ id: await getIdByToken(token), token: token });
+            var id = await getIdByToken(token);
+            res.send({ id: id, token: token });
           }
         })
       }
