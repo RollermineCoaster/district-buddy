@@ -297,10 +297,27 @@ ser.get('/get/:table/:id', async function (req, res, next) {
 })
 
 //get comment from a post
-ser.get('/commentinpost/:post_id', function (req, res, next) {
+ser.get('/post/:post_id/comments', function (req, res, next) {
   if (req.params.post_id) {
     //get comment
     pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE post_id = $1', [req.params.post_id], (err, qres) => {
+      if (err) {
+        sendError(err, res);
+      } else {
+        res.send(qres.rows);
+      }
+    });
+  } else {
+    res.send(400);
+  }
+  next();
+})
+
+//get post from a district
+ser.get('/district/:district_id/posts', function (req, res, next) {
+  if (req.params.district_id) {
+    //get post
+    pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE district_id = $1', [req.params.district_id], (err, qres) => {
       if (err) {
         sendError(err, res);
       } else {
