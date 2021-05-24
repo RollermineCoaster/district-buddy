@@ -11,6 +11,11 @@ var pool = new Pool({
 
 var ser = restify.createServer();
 
+ser.pre(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  next();
+})
+
 ser.use(restify.plugins.bodyParser({ mapParams: true }));
 
 function sendError(err, res) {
@@ -131,6 +136,7 @@ ser.post('/newpost', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 //new comment
@@ -152,6 +158,7 @@ ser.post('/newcomment', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 //update post
@@ -173,6 +180,7 @@ ser.put('/editpost', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 });
 
 //update comment
@@ -194,6 +202,7 @@ ser.put('/editcomment', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 });
 
 //delete post
@@ -233,6 +242,7 @@ ser.del('/delpost', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 });
 
 //delete comment
@@ -258,6 +268,7 @@ ser.del('/delcomment', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 });
 
 //get data from database(all)
@@ -267,6 +278,7 @@ ser.get('/get/:table', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 //get data from database
@@ -280,6 +292,7 @@ ser.get('/get/:table/:id', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 //get comment from a post
@@ -296,6 +309,7 @@ ser.get('/commentinpost/:post_id', function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 //get all data from a user
@@ -317,6 +331,7 @@ ser.post('/userinfo', async function (req, res, next) {
   } else {
     res.send(400);
   }
+  next();
 })
 
 ser.listen(process.env.PORT || 8080, function () {
