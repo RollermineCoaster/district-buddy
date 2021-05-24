@@ -243,6 +243,7 @@ ser.del('/delpost', async function (req, res, next) {
       res.send(401);
     }
   } else {
+    console.log(req);
     res.send(400);
   }
   next();
