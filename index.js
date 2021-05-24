@@ -286,7 +286,7 @@ ser.get('/get/:table/:id', async function (req, res, next) {
 ser.get('/commentinpost/:post_id', function (req, res, next) {
   if (req.params.post_id) {
     //get comment
-    pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE post_id = $1', [id], (err, qres) => {
+    pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE post_id = $1', [req.params.post_id], (err, qres) => {
       if (err) {
         sendError(err, res);
       } else {
