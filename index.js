@@ -2,8 +2,13 @@ var restify = require('restify');
 var crypto = require('crypto');
 
 var { Pool } = require('pg');
+
 var pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+
+});
+
+var pool = new Pool({
+  connectionString: "postgres://yjrwplkmrplkgn:6a27b0c72967ac8fcc2ab39e11a4e1cbc8f4df0ce2587eac5f7f9073ae7883b5@ec2-18-214-140-149.compute-1.amazonaws.com:5432/danlaam5uup1o9",
   ssl: {
     rejectUnauthorized: false
   }
