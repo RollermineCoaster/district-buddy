@@ -106,7 +106,7 @@ ser.post('/login', function (req, res, next) {
           if (err) {
             sendError(err, res);
           } else {
-            res.send({ token: token });
+            res.send({ id:getIdByToken(token), token: token });
           }
         })
       }
