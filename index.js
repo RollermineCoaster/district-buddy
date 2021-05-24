@@ -186,6 +186,12 @@ ser.put('/editpost', async function (req, res, next) {
   next();
 });
 
+//for cors
+ser.opts('/editpost', function (req, res, next){
+  res.send(200);
+  next();
+})
+
 //update comment
 ser.put('/editcomment', async function (req, res, next) {
   if (req.params.token && req.params.comment_id && req.params.content) {
@@ -207,6 +213,12 @@ ser.put('/editcomment', async function (req, res, next) {
   }
   next();
 });
+
+//for cors
+ser.opts('/editcomment', function (req, res, next){
+  res.send(200);
+  next();
+})
 
 //delete post
 ser.del('/delpost', async function (req, res, next) {
