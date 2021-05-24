@@ -248,6 +248,11 @@ ser.del('/delpost', async function (req, res, next) {
   next();
 });
 
+ser.opts('/delpost', function (req, res, next){
+  res.send(200);
+  next();
+})
+
 //delete comment
 ser.del('/delcomment', async function (req, res, next) {
   if (req.params.token && req.params.comment_id) {
