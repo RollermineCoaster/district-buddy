@@ -317,7 +317,7 @@ ser.get('/post/:post_id/comments', function (req, res, next) {
 ser.get('/district/:district_id/posts', function (req, res, next) {
   if (req.params.district_id) {
     //get post
-    pool.query('SELECT id, poster_id, timestamp, content FROM comments WHERE district_id = $1', [req.params.district_id], (err, qres) => {
+    pool.query('SELECT id, poster_id, timestamp, content FROM posts WHERE district_id = $1', [req.params.district_id], (err, qres) => {
       if (err) {
         sendError(err, res);
       } else {
